@@ -1,0 +1,50 @@
+[project]
+ref = "your-project-ref"
+api_url = "https://your-project-ref.supabase.co"
+db_url = "postgresql://postgres:[password]@db.your-project-ref.supabase.co:5432/postgres"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://localhost:54321"
+
+[inbucket]
+enabled = true
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+image_transformation_enabled = true
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["https://localhost:3000"]
+jwt_expiry = 3600
+
+[auth.email]
+enabled = true
+double_confirm_changes = true
+max_frequency = "1m0s"
+
+[functions]
+enabled = true
+verify_jwt = true
+
+[analytics]
+enabled = false
