@@ -222,11 +222,11 @@ export default function DashboardOverviewPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-6"
+        className="mb-4 md:mb-6 px-4 md:px-0"
       >
-        <div className="flex items-center gap-3 mb-2">
-          <Flame className="w-8 h-8 text-red-500 animate-pulse" />
-          <h1 className="text-3xl font-black text-white light:text-black">
+        <div className="flex items-center gap-2 md:gap-3 mb-2">
+          <Flame className="w-6 h-6 md:w-8 md:h-8 text-red-500 animate-pulse" />
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-black text-white light:text-black">
             WELCOME BACK, <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
               {profile?.username?.toUpperCase() || "PLAYER"}
             </span>
@@ -239,11 +239,11 @@ export default function DashboardOverviewPage() {
       </motion.div>
 
       {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[calc(100vh-200px)]">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 px-4 md:px-0">
         {/* Left Column (2/3 width) */}
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Top 3 Stats Cards */}
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
             {[
               { 
                 icon: Trophy, 
@@ -278,12 +278,12 @@ export default function DashboardOverviewPage() {
                 whileHover={{ y: -5, scale: 1.02 }}
                 className={`relative bg-gradient-to-br {stat.gradient} p-[2px] rounded-2xl shadow-2xl ${stat.glow}`}
               >
-                <div className="bg-black/90 light:bg-white/90 rounded-2xl p-5 h-full">
+                <div className="bg-black/90 light:bg-white/90 rounded-2xl p-4 md:p-5 h-full">
                   <div className="flex items-center justify-between mb-3">
                     <stat.icon className="w-8 h-8 text-white light:text-black" />
                     <Zap className="w-5 h-5 text-yellow-500" />
                   </div>
-                  <div className="text-3xl font-black text-white light:text-black mb-1">
+                  <div className="text-2xl md:text-3xl font-black text-white light:text-black mb-1">
                     {stat.value}
                   </div>
                   <div className="text-xs font-bold text-white/70 light:text-black/70 mb-1">
@@ -302,14 +302,14 @@ export default function DashboardOverviewPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex-1 bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-2xl p-6 overflow-hidden backdrop-blur-xl shadow-2xl"
+            className="flex-1 bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-2xl p-4 md:p-6 overflow-hidden backdrop-blur-xl shadow-2xl"
           >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
                   <Trophy className="w-6 h-6 text-white" />
                 </div>
-                <h2 className="text-2xl font-black text-white light:text-black">
+                <h2 className="text-xl md:text-2xl font-black text-white light:text-black">
                   ACTIVE TOURNAMENTS
                 </h2>
               </div>
@@ -345,10 +345,10 @@ export default function DashboardOverviewPage() {
                               {item.status}
                             </span>
                           </div>
-                          <h3 className="text-xl font-black text-white light:text-black mb-3 group-hover:text-red-500 transition-colors">
+                          <h3 className="text-lg md:text-xl font-black text-white light:text-black mb-3 group-hover:text-red-500 transition-colors">
                             {tournament.name}
                           </h3>
-                          <div className="flex items-center gap-6">
+                          <div className="flex flex-wrap items-center gap-3 md:gap-6">
                             <div className="flex items-center gap-2">
                               <Users className="w-4 h-4 text-white/50 light:text-black/50" />
                               <span className="text-sm font-bold text-white light:text-black">
@@ -402,20 +402,20 @@ export default function DashboardOverviewPage() {
           </motion.div>
 
           {/* Bottom 2 Cards */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Recent Activity */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
               whileHover={{ y: -3 }}
-              className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-2xl p-6 shadow-2xl"
+              className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-2xl p-4 md:p-6 shadow-2xl"
             >
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
                   <Target className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-black text-white light:text-black">
+                <h3 className="text-lg md:text-xl font-black text-white light:text-black">
                   RECENT RESULTS
                 </h3>
               </div>
@@ -453,19 +453,19 @@ export default function DashboardOverviewPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.7 }}
               whileHover={{ y: -3 }}
-              className="relative bg-gradient-to-br from-red-500/20 to-orange-500/20 border-2 border-red-500/30 rounded-2xl p-6 overflow-hidden shadow-2xl shadow-red-500/10"
+              className="relative bg-gradient-to-br from-red-500/20 to-orange-500/20 border-2 border-red-500/30 rounded-2xl p-4 md:p-6 overflow-hidden shadow-2xl shadow-red-500/10"
             >
               <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl" />
               <div className="relative flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
                   <Award className="w-6 h-6 text-white" />
                 </div>
-                <h3 className="text-xl font-black text-white light:text-black">
+                <h3 className="text-lg md:text-xl font-black text-white light:text-black">
                   YOUR RANK
                 </h3>
               </div>
               <div className="relative text-center">
-                <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">
+                <div className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">
                   #{profile?.rank || 0}
                 </div>
                 <div className="text-sm text-white/70 light:text-black/70">
@@ -481,7 +481,7 @@ export default function DashboardOverviewPage() {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 }}
-          className="relative bg-gradient-to-br from-red-500/10 via-red-600/10 to-orange-500/10 border-2 border-red-500/30 rounded-2xl p-6 flex flex-col overflow-hidden shadow-2xl shadow-red-500/10"
+          className="hidden lg:flex relative bg-gradient-to-br from-red-500/10 via-red-600/10 to-orange-500/10 border-2 border-red-500/30 rounded-2xl p-4 md:p-6 flex-col overflow-hidden shadow-2xl shadow-red-500/10"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl animate-pulse" />
           
