@@ -266,7 +266,7 @@ export default function AccountMarketplacePage() {
             ) : (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredAccounts.map((account) => (
-                  <AccountCard key={account.id} account={account} />
+                  <AccountCard key={account.id} account={account} categories={categories} />
                 ))}
               </div>
             )}
@@ -277,7 +277,7 @@ export default function AccountMarketplacePage() {
   );
 }
 
-function AccountCard({ account }: { account: any }) {
+function AccountCard({ account, categories }: { account: any, categories: any[] }) {
   const avgRating = account.reviews?.length > 0
     ? account.reviews.reduce((sum: number, r: any) => sum + r.rating, 0) / account.reviews.length
     : 0;

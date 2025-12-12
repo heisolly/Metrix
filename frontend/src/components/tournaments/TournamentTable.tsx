@@ -499,7 +499,7 @@ const TournamentTable = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {liveTournaments.map((tournament, index) => (
-                <TournamentCard key={`live-${tournament.id}`} tournament={tournament} index=${index} />
+                <TournamentCard key={`live-${tournament.id}`} tournament={tournament} index={index} />
               ))}
             </div>
           </div>
@@ -515,7 +515,7 @@ const TournamentTable = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {upcomingTournaments.map((tournament, index) => (
-              <TournamentCard key={`upcoming-${tournament.id}`} tournament={tournament} index=${index} />
+              <TournamentCard key={`upcoming-${tournament.id}`} tournament={tournament} index={index} />
             ))}
           </div>
         </div>
@@ -531,7 +531,7 @@ const TournamentTable = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {completedTournaments.map((tournament, index) => (
-                <TournamentCard key={`completed-${tournament.id}`} tournament={tournament} index=${index} />
+                <TournamentCard key={`completed-${tournament.id}`} tournament={tournament} index={index} />
               ))}
             </div>
           </div>

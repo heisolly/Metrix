@@ -54,9 +54,9 @@ export default function PublicLivePage() {
   }, []);
 
   const loadStream = async () => {
+    // Only show loading on first load
+    const isFirstLoad = !stream;
     try {
-      // Only show loading on first load
-      const isFirstLoad = !stream;
       if (isFirstLoad) setLoading(true);
       
       // Get active stream
@@ -77,7 +77,7 @@ export default function PublicLivePage() {
           setStream(streamData);
         } else if (stream.viewer_count !== streamData.viewer_count) {
           // Only update viewer count without replacing entire object
-          setStream(prev => ({ ...prev, viewer_count: streamData.viewer_count }));
+          setStream((prev: any) => ({ ...prev, viewer_count: streamData.viewer_count }));
         }
 
         // Load initial messages only on first load

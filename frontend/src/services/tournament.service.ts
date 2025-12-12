@@ -133,22 +133,23 @@ class TournamentService {
       };
 
       return {
+        success: true,
+        message: "Tournaments fetched successfully",
         data: paginatedResponse,
-        status: "success",
-        statusCode: 200,
       };
     } catch (error: any) {
       console.error("Error fetching tournaments:", error);
       return {
+        success: false,
+        message: "Failed to fetch tournaments",
         error: {
           name: "FetchError",
           message: error.message || "Failed to fetch tournaments",
           statusCode: 500,
           status: "error",
           code: "INTERNAL_SERVER_ERROR",
-        },
-        status: "error",
-        statusCode: 500,
+          timestamp: new Date().toISOString()
+        }
       };
     }
   }
@@ -167,21 +168,22 @@ class TournamentService {
       if (error) throw error;
 
       return {
+        success: true,
+        message: "Tournament fetched successfully",
         data: data as any,
-        status: "success",
-        statusCode: 200,
       };
     } catch (error: any) {
       return {
+        success: false,
+        message: "Tournament not found",
         error: {
           name: "FetchError",
           message: error.message,
           statusCode: 404,
           status: "error",
           code: "NOT_FOUND",
-        },
-        status: "error",
-        statusCode: 404,
+          timestamp: new Date().toISOString()
+        }
       };
     }
   }
@@ -203,21 +205,22 @@ class TournamentService {
       if (error) throw error;
 
       return {
+        success: true,
+        message: "Featured tournaments fetched successfully",
         data: data as any[],
-        status: "success",
-        statusCode: 200,
       };
     } catch (error: any) {
       return {
+        success: false,
+        message: "An error occurred",
         error: {
           name: "FetchError",
           message: error.message,
           statusCode: 500,
           status: "error",
           code: "INTERNAL_SERVER_ERROR",
-        },
-        status: "error",
-        statusCode: 500,
+          timestamp: new Date().toISOString()
+        }
       };
     }
   }
@@ -240,21 +243,22 @@ class TournamentService {
       if (error) throw error;
 
       return {
+        success: true,
+        message: "Upcoming tournaments fetched successfully",
         data: data as any[],
-        status: "success",
-        statusCode: 200,
       };
     } catch (error: any) {
       return {
+        success: false,
+        message: "An error occurred",
         error: {
           name: "FetchError",
           message: error.message,
           statusCode: 500,
           status: "error",
           code: "INTERNAL_SERVER_ERROR",
-        },
-        status: "error",
-        statusCode: 500,
+          timestamp: new Date().toISOString()
+        }
       };
     }
   }
@@ -281,13 +285,13 @@ class TournamentService {
       if (error) {
          console.warn("Could not fetch participants", error);
          return {
+            success: true,
+            message: "No participants found",
             data: {
-              data: [],
-              meta: { page, limit, total: 0, totalPages: 0, hasNextPage: false, hasPrevPage: false },
-              page, limit, total: 0, totalPages: 0, hasNextPage: false, hasPrevPage: false
-            },
-            status: "success",
-            statusCode: 200
+               data: [],
+               meta: { page, limit, total: 0, totalPages: 0, hasNextPage: false, hasPrevPage: false },
+               page, limit, total: 0, totalPages: 0, hasNextPage: false, hasPrevPage: false
+            }
          }
       }
       
@@ -303,15 +307,15 @@ class TournamentService {
       };
 
       return {
+        success: true,
+        message: "Participants fetched successfully",
         data: paginatedResponse,
-        status: "success",
-        statusCode: 200,
       };
     } catch (error: any) {
       return {
-        error: { name: "Error", message: error.message, statusCode: 500, status: "error", code: "SERVER_ERROR" },
-        status: "error",
-        statusCode: 500,
+        success: false,
+        message: error.message,
+        error: { name: "Error", message: error.message, statusCode: 500, status: "error", code: "SERVER_ERROR", timestamp: new Date().toISOString() }
       };
     }
   }
@@ -331,20 +335,20 @@ class TournamentService {
     ];
     
     return Promise.resolve({
+      success: true,
+      message: "Games fetched successfully",
       data: games,
-      status: "success",
-      statusCode: 200,
     });
   }
   
   // Implements other methods as no-ops or basic fetches for now to satisfy interface
   
   async getTournamentBracket(id: string): Promise<ApiResponse<BracketData>> {
-      return { data: { rounds: [], currentRound: 0, totalRounds: 0 }, status: "success", statusCode: 200 };
+      return { success: true, message: "Bracket data fetched", data: { rounds: [], currentRound: 0, totalRounds: 0 } };
   }
 
   async checkEligibility(id: string): Promise<ApiResponse<TournamentEligibility>> {
-      return { data: { eligible: true }, status: "success", statusCode: 200 };
+      return { success: true, message: "Eligible", data: { eligible: true } };
   }
 
   async registerForTournament(data: TournamentRegistrationData): Promise<ApiResponse<TournamentRegistration>> {
@@ -366,18 +370,18 @@ class TournamentService {
           
         if (error) throw error;
         
-        return { data: result as any, status: "success", statusCode: 201 };
+        return { success: true, message: "Registered successfully", data: result as any };
       } catch(e: any) {
-         return { error: { name: "RegError", message: e.message, statusCode: 500, status: "error", code: "ERR" }, status: "error", statusCode: 500 };
+         return { success: false, message: e.message, error: { name: "RegError", message: e.message, statusCode: 500, status: "error", code: "ERR", timestamp: new Date().toISOString() } };
       }
   }
   
   async cancelRegistration(tId: string, rId: string): Promise<ApiResponse<void>> {
-      return { data: undefined, status: "success", statusCode: 200 };
+      return { success: true, message: "Registration cancelled", data: undefined };
   }
 
   async getUserRegistrations(status?: string): Promise<ApiResponse<TournamentRegistration[]>> {
-      return { data: [], status: "success", statusCode: 200 };
+      return { success: true, message: "Registrations fetched", data: [] };
   }
   
   async getUserTournaments(page=1, limit=10): Promise<ApiResponse<PaginatedResponse<Tournament>>> {
@@ -387,26 +391,26 @@ class TournamentService {
         page, limit, total: 0, totalPages: 0, hasNextPage: false, hasPrevPage: false
       };
       
-      return { 
-          data: paginatedResponse, 
-          status: "success", 
-          statusCode: 200 
+      return {
+          success: true,
+          message: "User tournaments fetched",
+          data: paginatedResponse,
       };
   }
 
   async getTournamentMatches(id: string): Promise<ApiResponse<any[]>> {
     const { data } = await supabase.from('matches').select('*').eq('tournament_id', id);
-    return { data: data || [], status: "success", statusCode: 200 };
+    return { success: true, message: "Matches fetched", data: data || [] };
   }
   
     async getTournamentRules(tournamentId: string): Promise<ApiResponse<any>> {
-    return { data: {}, status: "success", statusCode: 200 };
+    return { success: true, message: "Rules fetched", data: {} };
   }
 
   async getTournamentStandings(
     tournamentId: string,
   ): Promise<ApiResponse<any[]>> {
-    return { data: [], status: "success", statusCode: 200 };
+    return { success: true, message: "Standings fetched", data: [] };
   }
 
   async searchTournaments(
@@ -421,11 +425,11 @@ class TournamentService {
   }
 
   async getTournamentStats(tournamentId: string): Promise<ApiResponse<any>> {
-    return { data: {}, status: "success", statusCode: 200 };
+    return { success: true, message: "Stats fetched", data: {} };
   }
 
   async getFormats(): Promise<ApiResponse<string[]>> {
-    return { data: ["Single Elimination", "Double Elimination", "Round Robin"], status: "success", statusCode: 200 };
+    return { success: true, message: "Formats fetched", data: ["Single Elimination", "Double Elimination", "Round Robin"] };
   }
 }
 
