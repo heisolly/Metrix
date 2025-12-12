@@ -8,7 +8,8 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
 import BracketTree from "@/components/BracketTree";
 import LoadingScreen from "@/components/LoadingScreen";
-import { initializeAlatPay, loadAlatPayScript } from "@/lib/alatpay";
+import { PaystackButton } from "react-paystack";
+import { PAYSTACK_PUBLIC_KEY, nairaToKobo } from "@/lib/paystack";
 
 export default function PlayerTournamentPage() {
   const params = useParams();
@@ -25,11 +26,6 @@ export default function PlayerTournamentPage() {
 
   useEffect(() => {
     loadTournament();
-  }, []);
-
-  // Load AlatPay script
-  useEffect(() => {
-    loadAlatPayScript().catch(console.error);
   }, []);
 
   const loadTournament = async () => {
@@ -266,41 +262,26 @@ export default function PlayerTournamentPage() {
             <p className="text-white/70 mb-4">Join this tournament and compete for the prize pool!</p>
             
             {userId && userEmail ? (
-              <button
-                onClick={() => {
-                  setJoining(true);
-                  
-                  initializeAlatPay({
-                    amount: tournament.entry_fee,
-                    email: userEmail,
-                    firstName: userEmail.split('@')[0],
-                    lastName: '',
-                    phone: '',
-                    metadata: {
-                      tournamentId: tournamentId,
-                      userId: userId,
-                      tournamentName: tournament.name
-                    },
-                    onSuccess: async (response) => {
-                      console.log('🎉 AlatPay Payment Successful:', response);
-                      await handlePaymentSuccess(response);
-                    },
-                    onClose: () => {
-                      console.log('Payment popup closed');
-                      setJoining(false);
-                    },
-                    onError: (error) => {
-                      console.error('Payment error:', error);
-                      alert('Payment failed. Please try again.');
-                      setJoining(false);
-                    }
-                  });
+              <PaystackButton
+                email={userEmail}
+                amount={nairaToKobo(tournament.entry_fee)}
+                publicKey={PAYSTACK_PUBLIC_KEY}
+                text={joining ? "Processing..." : `Pay ₦${tournament.entry_fee.toLocaleString()} to Join`}
+                onSuccess={async (reference: any) => {
+                  console.log('🎉 Payment Successful:', reference);
+                  await handlePaymentSuccess(reference);
+                }}
+                onClose={() => {
+                  console.log('Payment popup closed');
+                  setJoining(false);
+                }}
+                metadata={{
+                  tournamentId: tournamentId,
+                  userId: userId,
+                  tournamentName: tournament.name
                 }}
                 className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={joining}
-              >
-                {joining ? "Processing..." : `Pay ₦${tournament.entry_fee} to Join`}
-              </button>
+              />
             ) : (
               <button
                 onClick={() => router.push('/signin')}
