@@ -16,19 +16,72 @@ export default function AuthCallbackPage() {
 
   const handleCallback = async () => {
     try {
-      // Get the code from URL
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      // Get the code from URL (query parameters)
       const searchParams = new URLSearchParams(window.location.search);
-      
       const code = searchParams.get('code');
       const error = searchParams.get('error');
       const errorDescription = searchParams.get('error_description');
+
+      // Also check for hash parameters (implicit flow)
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const accessToken = hashParams.get('access_token');
+      const refreshToken = hashParams.get('refresh_token');
 
       if (error) {
         throw new Error(errorDescription || error);
       }
 
-      if (code) {
+      // Handle hash-based tokens (implicit flow)
+      if (accessToken) {
+        console.log('✅ Received access token from hash');
+        
+        // Set the session using the tokens
+        const { data, error: sessionError } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken || '',
+        });
+
+        if (sessionError) throw sessionError;
+
+        if (data.user) {
+          // Check if profile exists
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', data.user.id)
+            .single();
+
+          // Create profile if it doesn't exist
+          if (!profile) {
+            const username = data.user.email?.split('@')[0] || 'user';
+            const fullName = data.user.user_metadata?.full_name || data.user.user_metadata?.name || '';
+            
+            await supabase
+              .from('profiles')
+              .upsert({
+                id: data.user.id,
+                username: username,
+                full_name: fullName,
+                email: data.user.email,
+                avatar_url: data.user.user_metadata?.avatar_url || data.user.user_metadata?.picture,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+              });
+          }
+
+          setStatus("success");
+          setMessage("Authentication successful! Redirecting...");
+          
+          // Redirect to dashboard
+          setTimeout(() => {
+            router.push("/dashboard/overview");
+          }, 1500);
+        }
+      }
+      // Handle code-based flow (PKCE)
+      else if (code) {
+        console.log('✅ Received authorization code');
+        
         // Exchange code for session
         const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
         
@@ -36,7 +89,7 @@ export default function AuthCallbackPage() {
 
         if (data.user) {
           // Check if profile exists
-          const { data: profile, error: profileError } = await supabase
+          const { data: profile } = await supabase
             .from('profiles')
             .select('*')
             .eq('id', data.user.id)
@@ -79,7 +132,7 @@ export default function AuthCallbackPage() {
             router.push("/dashboard/overview");
           }, 1500);
         } else {
-          throw new Error("No authentication code received");
+          throw new Error("No authentication code or token received");
         }
       }
     } catch (error: any) {
