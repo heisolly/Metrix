@@ -64,14 +64,14 @@ export default function BonusPage() {
   };
 
   const copyReferralLink = () => {
-    const link = `{window.location.origin}/signup?ref=${profile?.referral_code}`;
+    const link = `${window.location.origin}/signup?ref=${profile?.referral_code}`;
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const shareReferralLink = async () => {
-    const link = `{window.location.origin}/signup?ref=${profile?.referral_code}`;
+    const link = `${window.location.origin}/signup?ref=${profile?.referral_code}`;
     const text = `Join Metrix and compete in esports tournaments! Use my referral code: ${profile?.referral_code}`;
 
     if (navigator.share) {
@@ -126,7 +126,7 @@ export default function BonusPage() {
     );
   }
 
-  const referralLink = `{typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${profile?.referral_code}`;
+  const referralLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${profile?.referral_code}`;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black py-8">
