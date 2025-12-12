@@ -26,16 +26,24 @@ export interface AlatPayConfig {
 export function initializeAlatPay(config: AlatPayConfig) {
   // Ensure AlatPay script is loaded
   if (typeof window === 'undefined') {
-    console.error('AlatPay can only be initialized in browser');
+    console.error('❌ AlatPay can only be initialized in browser');
+    config.onError?.({ message: 'AlatPay can only be initialized in browser' });
     return;
   }
 
   // Check if AlatPay is loaded
   if (!(window as any).AlatPay) {
-    console.error('AlatPay script not loaded. Please add the script to your page.');
-    config.onError?.({ message: 'AlatPay script not loaded' });
+    console.error('❌ AlatPay script not loaded. Please add the script to your page.');
+    console.log('💡 Tip: Check if https://alatpay.ng/alatpay-inline.js is loaded');
+    console.log('💡 Tip: Check browser console for script loading errors');
+    config.onError?.({ message: 'AlatPay script not loaded. Please refresh the page and try again.' });
     return;
   }
+
+  console.log('✅ AlatPay script loaded successfully');
+  console.log('🔑 Using API Key:', ALATPAY_PUBLIC_KEY);
+  console.log('🏢 Using Business ID:', ALATPAY_BUSINESS_ID);
+  console.log('💰 Amount:', config.amount, 'NGN');
 
   try {
     const handler = (window as any).AlatPay.setup({
@@ -53,7 +61,7 @@ export function initializeAlatPay(config: AlatPayConfig) {
         config.onSuccess(response);
       },
       onClose: () => {
-        console.log('AlatPay popup closed');
+        console.log('ℹ️ AlatPay popup closed');
         config.onClose?.();
       },
       onError: (error: any) => {
@@ -62,10 +70,12 @@ export function initializeAlatPay(config: AlatPayConfig) {
       }
     });
 
+    console.log('🚀 Opening AlatPay payment modal...');
     // Open payment modal
     handler.openIframe();
   } catch (error) {
-    console.error('Error initializing AlatPay:', error);
+    console.error('❌ Error initializing AlatPay:', error);
+    console.log('💡 Error details:', JSON.stringify(error, null, 2));
     config.onError?.(error);
   }
 }
