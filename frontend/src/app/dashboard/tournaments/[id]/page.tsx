@@ -8,7 +8,8 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
 import BracketTree from "@/components/BracketTree";
 import LoadingScreen from "@/components/LoadingScreen";
-import { initializeAlatPayment } from "@/lib/alatpay";
+import UseALATPay from "react-alatpay";
+import { ALATPAY_PUBLIC_KEY, ALATPAY_BUSINESS_ID } from "@/lib/alatpay";
 
 export default function PlayerTournamentPage() {
   const params = useParams();
@@ -265,26 +266,32 @@ export default function PlayerTournamentPage() {
                 onClick={() => {
                   setJoining(true);
                   
-                  initializeAlatPayment({
+                  const config = UseALATPay({
                     amount: tournament.entry_fee,
+                    apiKey: ALATPAY_PUBLIC_KEY,
+                    businessId: ALATPAY_BUSINESS_ID,
+                    currency: "NGN",
                     email: userEmail,
                     firstName: userEmail.split('@')[0],
                     lastName: '',
-                    phone: '',
-                    metadata: {
+                    color: "#ef4444", // Red color to match your theme
+                    metadata: JSON.stringify({
                       tournamentId: tournamentId,
                       userId: userId,
                       tournamentName: tournament.name
-                    },
-                    onSuccess: async (response) => {
-                      console.log('🎉 Payment Successful:', response);
-                      await handlePaymentSuccess(response);
-                    },
+                    }),
+                    phone: '',
                     onClose: () => {
-                      console.log('Payment dialog closed');
+                      console.log("AlatPay popup closed");
                       setJoining(false);
-                    }
+                    },
+                    onTransaction: (response: any) => {
+                      console.log("🎉 AlatPay Transaction Response:", response);
+                      handlePaymentSuccess(response);
+                    },
                   });
+                  
+                  config.submit();
                 }}
                 className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={joining}
