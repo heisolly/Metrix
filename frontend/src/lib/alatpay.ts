@@ -34,7 +34,7 @@ export function initializeAlatPay(config: AlatPayConfig) {
   // Check if AlatPay is loaded
   if (!(window as any).AlatPay) {
     console.error('❌ AlatPay script not loaded. Please add the script to your page.');
-    console.log('💡 Tip: Check if https://alatpay.ng/alatpay-inline.js is loaded');
+    console.log('💡 Tip: Check if https://web.alatpay.ng/js/alatpay.js is loaded');
     console.log('💡 Tip: Check browser console for script loading errors');
     config.onError?.({ message: 'AlatPay script not loaded. Please refresh the page and try again.' });
     return;
@@ -98,7 +98,7 @@ export function loadAlatPayScript(): Promise<void> {
     }
 
     const script = document.createElement('script');
-    script.src = 'https://alatpay.ng/alatpay-inline.js';
+    script.src = 'https://web.alatpay.ng/js/alatpay.js';
     script.async = true;
     script.onload = () => {
       console.log('✅ AlatPay script loaded');

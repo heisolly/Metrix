@@ -103,7 +103,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased w-full">
         <Script 
-          src="https://alatpay.ng/alatpay-inline.js" 
+          src="https://web.alatpay.ng/js/alatpay.js" 
           strategy="beforeInteractive"
         />
         <Providers>
