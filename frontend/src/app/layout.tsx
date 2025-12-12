@@ -102,10 +102,6 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#0F131A" />
       </head>
       <body className="font-sans antialiased w-full">
-        <Script 
-          src="https://alatpay.ng/alatpay.js" 
-          strategy="beforeInteractive"
-        />
         <Providers>
           <div className="w-full min-h-screen bg-light-bg-primary dark:bg-dark-bg-primary text-light-text-primary dark:text-dark-text-primary">
             {children}

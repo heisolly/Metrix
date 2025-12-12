@@ -8,7 +8,7 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
 import BracketTree from "@/components/BracketTree";
 import LoadingScreen from "@/components/LoadingScreen";
-import { initializeAlatPayment, loadAlatPayScript } from "@/lib/alatpay";
+import { initializeAlatPayment } from "@/lib/alatpay";
 
 export default function PlayerTournamentPage() {
   const params = useParams();
@@ -25,13 +25,6 @@ export default function PlayerTournamentPage() {
 
   useEffect(() => {
     loadTournament();
-  }, []);
-
-  // Load AlatPay script
-  useEffect(() => {
-    loadAlatPayScript().catch((error) => {
-      console.error('Failed to load AlatPay:', error);
-    });
   }, []);
 
   const loadTournament = async () => {
