@@ -1,23 +1,115 @@
-// AlatPay Configuration
-export const ALATPAY_PUBLIC_KEY = process.env.NEXT_PUBLIC_ALATPAY_PUBLIC_KEY || 'f957181adde8484b973b7efa933f6ef6';
-export const ALATPAY_SECRET_KEY = process.env.NEXT_PUBLIC_ALATPAY_SECRET_KEY || '7407371012444541b57febecc0de585e';
-export const ALATPAY_BUSINESS_ID = process.env.NEXT_PUBLIC_ALATPAY_BUSINESS_ID || 'b019677e-cc27-436a-9bda-08dde19160cb';
+/**
+ * AlatPay Payment Integration
+ * Official Web Plugin Integration for Next.js
+ */
 
-export const alatpayConfig = {
-  publicKey: ALATPAY_PUBLIC_KEY,
-  secretKey: ALATPAY_SECRET_KEY,
-  businessId: ALATPAY_BUSINESS_ID,
-  currency: 'NGN',
-};
+export const ALATPAY_PUBLIC_KEY = process.env.NEXT_PUBLIC_ALATPAY_PUBLIC_KEY || "f957181adde8484b973b7efa933f6ef6";
+export const ALATPAY_SECRET_KEY = process.env.NEXT_PUBLIC_ALATPAY_SECRET_KEY || "7407371012444541b57febecc0de585e";
+export const ALATPAY_BUSINESS_ID = process.env.NEXT_PUBLIC_ALATPAY_BUSINESS_ID || "b019677e-cc27-436a-9bda-08dde19160cb";
 
-// Convert USD to NGN (Nigerian Naira)
-const USD_TO_NGN_RATE = 1650; // Update this rate as needed
+export interface AlatPayConfig {
+  amount: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone?: string;
+  metadata?: Record<string, any>;
+  onSuccess: (response: any) => void;
+  onClose?: () => void;
+  onError?: (error: any) => void;
+}
+
+/**
+ * Initialize AlatPay Payment
+ * Uses AlatPay Web Plugin
+ */
+export function initializeAlatPay(config: AlatPayConfig) {
+  // Ensure AlatPay script is loaded
+  if (typeof window === 'undefined') {
+    console.error('AlatPay can only be initialized in browser');
+    return;
+  }
+
+  // Check if AlatPay is loaded
+  if (!(window as any).AlatPay) {
+    console.error('AlatPay script not loaded. Please add the script to your page.');
+    config.onError?.({ message: 'AlatPay script not loaded' });
+    return;
+  }
+
+  try {
+    const handler = (window as any).AlatPay.setup({
+      apiKey: ALATPAY_PUBLIC_KEY,
+      businessId: ALATPAY_BUSINESS_ID,
+      amount: config.amount,
+      currency: 'NGN',
+      email: config.email,
+      firstName: config.firstName,
+      lastName: config.lastName,
+      phone: config.phone || '',
+      metadata: config.metadata || {},
+      onSuccess: (response: any) => {
+        console.log('✅ AlatPay Payment Successful:', response);
+        config.onSuccess(response);
+      },
+      onClose: () => {
+        console.log('AlatPay popup closed');
+        config.onClose?.();
+      },
+      onError: (error: any) => {
+        console.error('❌ AlatPay Payment Error:', error);
+        config.onError?.(error);
+      }
+    });
+
+    // Open payment modal
+    handler.openIframe();
+  } catch (error) {
+    console.error('Error initializing AlatPay:', error);
+    config.onError?.(error);
+  }
+}
+
+/**
+ * Load AlatPay Script
+ * Call this once in your app layout
+ */
+export function loadAlatPayScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (typeof window === 'undefined') {
+      reject(new Error('Window is not defined'));
+      return;
+    }
+
+    // Check if already loaded
+    if ((window as any).AlatPay) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://alatpay.ng/alatpay-inline.js';
+    script.async = true;
+    script.onload = () => {
+      console.log('✅ AlatPay script loaded');
+      resolve();
+    };
+    script.onerror = () => {
+      console.error('❌ Failed to load AlatPay script');
+      reject(new Error('Failed to load AlatPay script'));
+    };
+
+    document.body.appendChild(script);
+  });
+}
+
+// Currency conversion helper
+const USD_TO_NGN_RATE = 1650;
 
 export function convertUSDToNGN(usd: number): number {
-  return Math.round(usd * USD_TO_NGN_RATE); // AlatPay expects amount in Naira
+  return Math.round(usd * USD_TO_NGN_RATE);
 }
 
-export function formatNGN(amount: number): string {
-  return `₦${amount.toLocaleString()}`;
+export function convertNGNToUSD(ngn: number): number {
+  return Math.round(ngn / USD_TO_NGN_RATE);
 }
-
