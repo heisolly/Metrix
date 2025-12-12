@@ -1,6 +1,7 @@
 /**
  * AlatPay Payment Integration
- * Official Web Plugin Integration for Next.js
+ * Using AlatPay Web Plugin
+ * Documentation: https://alatpay.ng/docs/web-plugin
  */
 
 export const ALATPAY_PUBLIC_KEY = process.env.NEXT_PUBLIC_ALATPAY_PUBLIC_KEY || "f957181adde8484b973b7efa933f6ef6";
@@ -16,73 +17,66 @@ export interface AlatPayConfig {
   metadata?: Record<string, any>;
   onSuccess: (response: any) => void;
   onClose?: () => void;
-  onError?: (error: any) => void;
 }
 
 /**
- * Initialize AlatPay Payment
- * Uses AlatPay Web Plugin
+ * Initialize AlatPay Payment using Web Plugin
+ * This uses the Alatpay.setup() method from their web plugin
  */
-export function initializeAlatPay(config: AlatPayConfig) {
-  // Ensure AlatPay script is loaded
+export function initializeAlatPayment(config: AlatPayConfig) {
   if (typeof window === 'undefined') {
     console.error('❌ AlatPay can only be initialized in browser');
-    config.onError?.({ message: 'AlatPay can only be initialized in browser' });
     return;
   }
 
-  // Check if AlatPay is loaded
-  if (!(window as any).AlatPay) {
-    console.error('❌ AlatPay script not loaded. Please add the script to your page.');
-    console.log('💡 Tip: Check if https://web.alatpay.ng/js/alatpay.js is loaded');
-    console.log('💡 Tip: Check browser console for script loading errors');
-    config.onError?.({ message: 'AlatPay script not loaded. Please refresh the page and try again.' });
+  // Check if Alatpay is loaded (note: lowercase 'p' in Alatpay)
+  const AlatpaySDK = (window as any).Alatpay;
+  
+  if (!AlatpaySDK || !AlatpaySDK.setup) {
+    console.error('❌ AlatPay SDK not loaded');
+    console.log('💡 Make sure the AlatPay script is loaded');
+    alert('Payment system not ready. Please refresh the page and try again.');
     return;
   }
 
-  console.log('✅ AlatPay script loaded successfully');
-  console.log('🔑 Using API Key:', ALATPAY_PUBLIC_KEY);
+  console.log('✅ AlatPay SDK loaded');
+  console.log('🔑 Using Subscription Key (Public Key):', ALATPAY_PUBLIC_KEY);
   console.log('🏢 Using Business ID:', ALATPAY_BUSINESS_ID);
   console.log('💰 Amount:', config.amount, 'NGN');
 
   try {
-    const handler = (window as any).AlatPay.setup({
-      apiKey: ALATPAY_PUBLIC_KEY,
+    // Configure AlatPay
+    const alatpayConfig = AlatpaySDK.setup({
+      subscriptionKey: ALATPAY_PUBLIC_KEY, // This is the Public Key
       businessId: ALATPAY_BUSINESS_ID,
+      email: config.email,
       amount: config.amount,
       currency: 'NGN',
-      email: config.email,
       firstName: config.firstName,
       lastName: config.lastName,
       phone: config.phone || '',
-      metadata: config.metadata || {},
-      onSuccess: (response: any) => {
-        console.log('✅ AlatPay Payment Successful:', response);
+      metadata: JSON.stringify(config.metadata || {}),
+      onTransaction: function(response: any) {
+        console.log('✅ AlatPay Transaction Response:', response);
         config.onSuccess(response);
       },
-      onClose: () => {
-        console.log('ℹ️ AlatPay popup closed');
+      onClose: function() {
+        console.log('ℹ️ AlatPay dialog closed');
         config.onClose?.();
-      },
-      onError: (error: any) => {
-        console.error('❌ AlatPay Payment Error:', error);
-        config.onError?.(error);
       }
     });
 
-    console.log('🚀 Opening AlatPay payment modal...');
-    // Open payment modal
-    handler.openIframe();
+    console.log('🚀 Opening AlatPay payment dialog...');
+    // Open the payment dialog
+    alatpayConfig.openDialog();
   } catch (error) {
     console.error('❌ Error initializing AlatPay:', error);
-    console.log('💡 Error details:', JSON.stringify(error, null, 2));
-    config.onError?.(error);
+    alert('Failed to initialize payment. Please try again.');
   }
 }
 
 /**
  * Load AlatPay Script
- * Call this once in your app layout
  */
 export function loadAlatPayScript(): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -92,16 +86,17 @@ export function loadAlatPayScript(): Promise<void> {
     }
 
     // Check if already loaded
-    if ((window as any).AlatPay) {
+    if ((window as any).Alatpay) {
+      console.log('✅ AlatPay already loaded');
       resolve();
       return;
     }
 
     const script = document.createElement('script');
-    script.src = 'https://web.alatpay.ng/js/alatpay.js';
+    script.src = 'https://alatpay.ng/alatpay.js';
     script.async = true;
     script.onload = () => {
-      console.log('✅ AlatPay script loaded');
+      console.log('✅ AlatPay script loaded successfully');
       resolve();
     };
     script.onerror = () => {
@@ -109,7 +104,7 @@ export function loadAlatPayScript(): Promise<void> {
       reject(new Error('Failed to load AlatPay script'));
     };
 
-    document.body.appendChild(script);
+    document.head.appendChild(script);
   });
 }
 
