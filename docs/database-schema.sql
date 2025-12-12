@@ -243,7 +243,7 @@ CREATE INDEX idx_wallets_user_id ON public.wallets(user_id);
 
 -- Functions and triggers
 CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS 
 BEGIN
   INSERT INTO public.users (id, username, email, full_name)
   VALUES (
@@ -259,7 +259,7 @@ BEGIN
   
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- Trigger to create user profile and wallet on signup
 CREATE TRIGGER on_auth_user_created
@@ -268,12 +268,12 @@ CREATE TRIGGER on_auth_user_created
 
 -- Update updated_at timestamps
 CREATE OR REPLACE FUNCTION public.update_updated_at_column()
-RETURNS TRIGGER AS $$
+RETURNS TRIGGER AS 
 BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+ LANGUAGE plpgsql;
 
 -- Create triggers for updated_at
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON public.users

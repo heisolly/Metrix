@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Root variables for both themes */
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+  }
+
+  /* Light mode base styles */
+  .light {
+    /* Background colors */
+    --bg-primary: 0 0% 100%;
+    --bg-secondary: 210 40% 98%;
+    --bg-tertiary: 214 32% 91%;
+    
+    /* Text colors */
+    --text-primary: 222.2 47.4% 11.2%;
+    --text-secondary: 215.4 16.3% 46.9%;
+    --text-muted: 215.4 16.3% 56.9%;
+    
+    /* Border colors */
+    --border: 214.3 31.8% 91.4%;
+    --border-hover: 0 84.2% 60.2%;
+  }
+
+  /* Dark mode base styles */
+  .dark {
+    /* Background colors */
+    --bg-primary: 222.2 84% 4.9%;
+    --bg-secondary: 217.2 32.6% 17.5%;
+    --bg-tertiary: 215 20.2% 25.1%;
+    
+    /* Text colors */
+    --text-primary: 210 40% 98%;
+    --text-secondary: 215 20.2% 65.1%;
+    --text-muted: 215.4 16.3% 46.9%;
+    
+    /* Border colors */
+    --border: 217.2 32.6% 17.5%;
+    --border-hover: 0 84.2% 60.2%;
+  }
+}
+
+@layer components {
+  /* Light mode component overrides */
+  .light {
+    /* Sections */
+    section {
+      @apply bg-white text-gray-900;
+    }
+
+    /* Cards */
+    .card {
+      @apply bg-white border-gray-200 shadow-sm;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      @apply bg-red-600 hover:bg-red-700 text-white;
+    }
+
+    /* Headers */
+    header {
+      @apply bg-white/95 backdrop-blur-xl border-b border-gray-200;
+    }
+
+    /* Footer */
+    footer {
+      @apply bg-gray-50 text-gray-900;
+    }
+
+    /* Input fields */
+    input, textarea, select {
+      @apply bg-white border-gray-300 text-gray-900 placeholder-gray-500;
+    }
+
+    /* Modals */
+    .modal {
+      @apply bg-white border-gray-200;
+    }
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar for light mode */
+  .light ::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+  }
+
+  .light ::-webkit-scrollbar-thumb {
+    @apply bg-gray-400 hover:bg-gray-500;
+  }
+
+  /* Text utilities for light mode */
+  .light .text-primary {
+    @apply text-gray-900;
+  }
+
+  .light .text-secondary {
+    @apply text-gray-700;
+  }
+
+  .light .text-muted {
+    @apply text-gray-500;
+  }
+
+  /* Background utilities for light mode */
+  .light .bg-primary {
+    @apply bg-white;
+  }
+
+  .light .bg-secondary {
+    @apply bg-gray-50;
+  }
+
+  .light .bg-tertiary {
+    @apply bg-gray-100;
+  }
+
+  /* Border utilities for light mode */
+  .light .border-primary {
+    @apply border-gray-200;
+  }
+
+  .light .border-secondary {
+    @apply border-gray-300;
+  }
+}

@@ -1,36 +1,273 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎮 Metrix - Gaming Tournament Platform
 
-## Getting Started
+A comprehensive gaming tournament platform with live streaming, marketplace, and advanced payment systems.
 
-First, run the development server:
+## ✨ Features
+
+### 🏆 Tournament Management
+
+- Create and manage tournaments
+- Bracket system with automatic generation
+- Multiple tournament formats (Single/Double Elimination, Battle Royale, Round Robin)
+- Entry fee management
+- Participant registration
+- Manual verification system
+
+### 💳 Payment System
+
+- **AlatPay Integration** - Automated payment gateway
+- **Manual Payment System** - Bank transfer with admin verification
+- Flexible payment configuration
+- Pending payment verification
+- Payment proof upload and review
+
+### 🛒 Account Marketplace
+
+- Buy and sell gaming accounts
+- Secure transaction system
+- Account verification
+- Rating and review system
+- Purchase history
+
+### 📺 Live Streaming
+
+- Admin-managed live streams
+- Real-time chat system
+- Stream scheduling
+- Viewer engagement
+
+### 👥 User Management
+
+- User profiles with avatars
+- Referral system
+- Role-based access control (Admin/User)
+- Authentication with Supabase
+
+### 🏠 Dynamic Homepage
+
+- Editable tournament sections
+- Featured matches
+- Countdown timers
+- Responsive design
+
+### 📊 Admin Dashboard
+
+- Comprehensive admin panel
+- User management
+- Tournament oversight
+- Payment verification
+- Marketplace moderation
+- Live stream control
+- Analytics and reporting
+
+## 🚀 Tech Stack
+
+### Frontend
+
+- **Next.js 14** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling
+- **Framer Motion** - Animations
+- **Lucide React** - Icons
+
+### Backend
+
+- **Supabase** - Backend as a Service
+  - PostgreSQL database
+  - Authentication
+  - Row Level Security (RLS)
+  - Real-time subscriptions
+  - Storage
+
+### Payment Integration
+
+- **AlatPay** - Nigerian payment gateway
+- Manual bank transfer system
+
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Supabase account
+
+### Setup
+
+1. **Clone the repository**
+
+```bash
+git clone https://github.com/heisolly/Metrix.git
+cd Metrix/frontend
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Configure environment variables**
+
+```bash
+cp .env.local.example .env.local
+```
+
+Edit `.env.local` with your credentials:
+
+```env
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+
+# AlatPay
+NEXT_PUBLIC_ALATPAY_PUBLIC_KEY=your_alatpay_public_key
+NEXT_PUBLIC_ALATPAY_SECRET_KEY=your_alatpay_secret_key
+NEXT_PUBLIC_ALATPAY_BUSINESS_ID=your_alatpay_business_id
+```
+
+4. **Run database migrations**
+
+In Supabase SQL Editor, run these migrations in order:
+
+```sql
+-- Core tables
+migrations/create_referral_system.sql
+migrations/create_live_streaming_system.sql
+migrations/create_account_marketplace.sql
+migrations/create_homepage_cms.sql
+migrations/create_manual_payment_system.sql
+migrations/ensure_unique_match_ids.sql
+```
+
+5. **Start development server**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📚 Documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Admin Guides
 
-## Learn More
+- [Admin Navigation](ADMIN_NAVIGATION.md) - Complete admin panel guide
+- [Homepage CMS](HOMEPAGE_CMS_GUIDE.md) - Managing homepage content
+- [Manual Payment System](MANUAL_PAYMENT_SYSTEM.md) - Payment configuration
+- [AlatPay Integration](ALATPAY_INTEGRATION.md) - Payment gateway setup
+- [Live Streaming](LIVE_STREAMING_ADMIN_GUIDE.md) - Stream management
+- [Marketplace](ACCOUNT_MARKETPLACE_GUIDE.md) - Account marketplace
 
-To learn more about Next.js, take a look at the following resources:
+### Setup Guides
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Google Sign-In](GOOGLE_SIGNIN_SETUP.md) - OAuth configuration
+- [Payment Issue Resolution](PAYMENT_ISSUE_RESOLUTION.md) - Troubleshooting
+- [Referral System](REFERRAL_SYSTEM_WORKING.md) - Referral setup
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🗂️ Project Structure
 
-## Deploy on Vercel
+```
+frontend/
+├── src/
+│   ├── app/                    # Next.js app directory
+│   │   ├── admin/             # Admin dashboard
+│   │   │   ├── homepage/      # Homepage management
+│   │   │   ├── tournaments/   # Tournament management
+│   │   │   ├── payments/      # Payment settings
+│   │   │   ├── marketplace/   # Marketplace admin
+│   │   │   └── live/          # Live streaming
+│   │   ├── dashboard/         # User dashboard
+│   │   ├── tournaments/       # Tournament pages
+│   │   ├── marketplace/       # Marketplace pages
+│   │   ├── signin/            # Sign in page
+│   │   └── signup/            # Sign up page
+│   ├── components/            # React components
+│   ├── lib/                   # Utilities
+│   │   ├── auth.ts           # Authentication
+│   │   ├── database.ts       # Database queries
+│   │   ├── supabase.ts       # Supabase client
+│   │   └── alatpay.ts        # Payment config
+│   └── styles/               # Global styles
+├── migrations/               # Database migrations
+├── public/                   # Static assets
+└── package.json             # Dependencies
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔑 Key Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### For Users
+
+- ✅ Register and create profile
+- ✅ Join tournaments with payment
+- ✅ View live streams
+- ✅ Buy/sell gaming accounts
+- ✅ Refer friends for rewards
+- ✅ Track tournament progress
+
+### For Admins
+
+- ✅ Create and manage tournaments
+- ✅ Configure payment methods
+- ✅ Verify manual payments
+- ✅ Manage live streams
+- ✅ Moderate marketplace
+- ✅ Edit homepage content
+- ✅ View analytics
+
+## 🔒 Security
+
+- Row Level Security (RLS) on all tables
+- Admin-only access controls
+- Secure payment processing
+- OAuth integration
+- Environment variable protection
+
+## 🌐 Deployment
+
+### Vercel (Recommended)
+
+```bash
+npm run build
+vercel --prod
+```
+
+### Environment Variables
+
+Set these in your deployment platform:
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `NEXT_PUBLIC_ALATPAY_PUBLIC_KEY`
+- `NEXT_PUBLIC_ALATPAY_SECRET_KEY`
+- `NEXT_PUBLIC_ALATPAY_BUSINESS_ID`
+
+## 📝 License
+
+MIT License - See LICENSE file for details
+
+## 👥 Contributors
+
+- **heisolly** - Project Creator
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Support
+
+For support, email support@metrix.com or open an issue on GitHub.
+
+## 🎯 Roadmap
+
+- [ ] Mobile app (React Native)
+- [ ] More payment gateways
+- [ ] Advanced analytics
+- [ ] Tournament brackets visualization
+- [ ] Live score updates
+- [ ] Social features
+- [ ] Discord integration
+
+---
+
+**Built with ❤️ by the Metrix Team**
