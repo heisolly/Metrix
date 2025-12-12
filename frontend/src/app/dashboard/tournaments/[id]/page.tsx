@@ -192,8 +192,8 @@ export default function PlayerTournamentPage() {
               </div>
               <div className="bg-black/20 rounded-xl p-4 text-center">
                 <Users className="w-6 h-6 text-blue-500 mx-auto mb-2" />
-                <div className="text-2xl font-black text-white">{tournament.current_participants}/{tournament.max_participants}</div>
-                <div className="text-xs text-white/50">Participants</div>
+                <div className="text-2xl font-black text-white">{tournament.max_participants}</div>
+                <div className="text-xs text-white/50">Max Players</div>
               </div>
               <div className="bg-black/20 rounded-xl p-4 text-center">
                 <Calendar className="w-6 h-6 text-purple-500 mx-auto mb-2" />
@@ -264,34 +264,46 @@ export default function PlayerTournamentPage() {
             {userId && userEmail ? (
               <button
                 onClick={() => {
-                  setJoining(true);
-                  
-                  const config = UseALATPay({
-                    amount: tournament.entry_fee,
-                    apiKey: ALATPAY_PUBLIC_KEY,
-                    businessId: ALATPAY_BUSINESS_ID,
-                    currency: "NGN",
-                    email: userEmail,
-                    firstName: userEmail.split('@')[0],
-                    lastName: '',
-                    color: "#ef4444", // Red color to match your theme
-                    metadata: JSON.stringify({
-                      tournamentId: tournamentId,
-                      userId: userId,
-                      tournamentName: tournament.name
-                    }),
-                    phone: '',
-                    onClose: () => {
-                      console.log("AlatPay popup closed");
-                      setJoining(false);
-                    },
-                    onTransaction: (response: any) => {
-                      console.log("🎉 AlatPay Transaction Response:", response);
-                      handlePaymentSuccess(response);
-                    },
-                  });
-                  
-                  config.submit();
+                  try {
+                    setJoining(true);
+                    
+                    const config = UseALATPay({
+                      amount: tournament.entry_fee,
+                      apiKey: ALATPAY_PUBLIC_KEY,
+                      businessId: ALATPAY_BUSINESS_ID,
+                      currency: "NGN",
+                      email: userEmail,
+                      firstName: userEmail.split('@')[0],
+                      lastName: '',
+                      color: "#ef4444",
+                      metadata: JSON.stringify({
+                        tournamentId: tournamentId,
+                        userId: userId,
+                        tournamentName: tournament.name
+                      }),
+                      phone: '',
+                      onClose: () => {
+                        console.log("AlatPay popup closed");
+                        setJoining(false);
+                      },
+                      onTransaction: (response: any) => {
+                        console.log("🎉 AlatPay Transaction Response:", response);
+                        if (response.status === 'success' || response.status === 'successful') {
+                          handlePaymentSuccess(response);
+                        } else {
+                          console.error("Payment failed:", response);
+                          alert("Payment was not successful. Please try again.");
+                          setJoining(false);
+                        }
+                      },
+                    });
+                    
+                    config.submit();
+                  } catch (error) {
+                    console.error("Error initializing payment:", error);
+                    alert("Failed to open payment window. Please refresh and try again.");
+                    setJoining(false);
+                  }
                 }}
                 className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={joining}

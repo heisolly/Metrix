@@ -408,6 +408,13 @@ export default function AdminTournamentDetailPage() {
                 <Gamepad2 className="w-5 h-5" /> Create Match
               </Link>
 
+              <Link
+                href={`/admin/tournaments/${tournamentId}/participants`}
+                className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
+              >
+                <Users className="w-5 h-5" /> Manage Participants
+              </Link>
+
               {tournament.status === 'upcoming' && (
                 <button
                   onClick={() => updateStatus('ongoing')}
