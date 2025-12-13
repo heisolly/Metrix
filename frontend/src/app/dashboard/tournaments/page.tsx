@@ -78,7 +78,7 @@ export default function TournamentsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-black pb-20 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-black">
       <div className="max-w-7xl mx-auto px-3 md:px-4 py-4 md:py-8">
         {/* Header */}
         <div className="mb-4 md:mb-8">

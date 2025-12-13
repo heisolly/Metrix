@@ -50,7 +50,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto pb-20 md:pb-0">
+    <div className="max-w-4xl mx-auto">
       {/* Header */}
       <div className="mb-4 md:mb-8">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-black text-white light:text-black mb-1 md:mb-2">

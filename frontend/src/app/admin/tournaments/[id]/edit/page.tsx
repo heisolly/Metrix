@@ -101,7 +101,7 @@ export default function EditTournamentPage() {
 
     try {
       // Combine date and time
-      const startDateTime = new Date(`{formData.start_date}T{formData.start_time}`);
+      const startDateTime = new Date(`${formData.start_date}T${formData.start_time}`);
 
       const { error } = await supabase
         .from('tournaments')
@@ -130,10 +130,10 @@ export default function EditTournamentPage() {
       }
 
       alert('Tournament updated successfully!');
-      router.push(`/admin/tournaments/{tournamentId}`);
+      router.push(`/admin/tournaments/${tournamentId}`);
     } catch (error: any) {
       console.error('Error updating tournament:', error);
-      alert(`Failed to update tournament: {error.message || 'Unknown error'}`);
+      alert(`Failed to update tournament: ${error.message || 'Unknown error'}`);
     } finally {
       setSaving(false);
     }

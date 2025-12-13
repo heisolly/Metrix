@@ -75,7 +75,7 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto pb-24 md:pb-0">
+    <div className="max-w-5xl mx-auto">
       {/* Header */}
       <div className="mb-4 md:mb-8 px-2 md:px-0">
         <h1 className="text-2xl md:text-4xl font-black text-white light:text-black mb-1 md:mb-2">

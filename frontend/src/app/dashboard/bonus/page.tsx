@@ -129,7 +129,7 @@ export default function BonusPage() {
   const referralLink = `${typeof window !== 'undefined' ? window.location.origin : ''}/signup?ref=${profile?.referral_code}`;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black py-4 md:py-8 pb-20 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-black py-4 md:py-8">
       <div className="max-w-7xl mx-auto px-3 md:px-4">
         {/* Header */}
         <div className="mb-4 md:mb-8">

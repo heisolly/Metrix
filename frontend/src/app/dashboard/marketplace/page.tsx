@@ -124,7 +124,7 @@ export default function AccountMarketplacePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-black pb-20 md:pb-0">
+    <div className="min-h-screen bg-gradient-to-b from-black via-slate-900 to-black">
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-gradient-to-r from-purple-900/20 via-blue-900/20 to-purple-900/20 border-b border-white/10">
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />

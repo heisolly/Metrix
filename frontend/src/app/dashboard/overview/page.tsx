@@ -217,7 +217,7 @@ export default function DashboardOverviewPage() {
   }
 
   return (
-    <div className="h-full pb-20 md:pb-0">
+    <div className="h-full">
       {/* Welcome Header - Mobile Optimized */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
