@@ -217,338 +217,301 @@ export default function DashboardOverviewPage() {
   }
 
   return (
-    <div className="h-full">
-      {/* Welcome Header */}
+    <div className="h-full pb-20 md:pb-0">
+      {/* Welcome Header - Mobile Optimized */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-4 md:mb-6 px-4 md:px-0"
+        className="mb-4 md:mb-6"
       >
-        <div className="flex items-center gap-2 md:gap-3 mb-2">
-          <Flame className="w-6 h-6 md:w-8 md:h-8 text-red-500 animate-pulse" />
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-black text-white light:text-black">
-            WELCOME BACK, <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <Flame className="w-5 h-5 md:w-6 md:h-6 text-red-500 animate-pulse" />
+              <h1 className="text-lg md:text-2xl lg:text-3xl font-black text-white light:text-black">
+                WELCOME BACK
+              </h1>
+            </div>
+            <p className="text-xl md:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
               {profile?.username?.toUpperCase() || "PLAYER"}
-            </span>
-          </h1>
+            </p>
+          </div>
+          <div className="flex items-center gap-2 text-sm md:text-base">
+            <Crown className="w-4 h-4 text-yellow-500" />
+            <span className="text-white/70 light:text-black/70">Rank #{profile?.rank || 0}</span>
+          </div>
         </div>
-        <p className="text-white/70 light:text-black/70 flex items-center gap-2">
-          <Crown className="w-4 h-4 text-yellow-500" />
-          Rank #{profile?.rank || 0} • Ready to dominate the arena
-        </p>
       </motion.div>
 
-      {/* Main Grid Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 px-4 md:px-0">
-        {/* Left Column (2/3 width) */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          {/* Top 3 Stats Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
-            {[
-              { 
-                icon: Trophy, 
-                label: "Tournaments", 
-                value: stats?.tournaments_played || 0, 
-                subtitle: "Played",
-                gradient: "from-yellow-500 via-orange-500 to-red-500",
-                glow: "shadow-yellow-500/20"
-              },
-              { 
-                icon: TrendingUp, 
-                label: "Win Rate", 
-                value: `${stats?.win_rate || 0}%`, 
-                subtitle: `${stats?.wins || 0} wins`,
-                gradient: "from-green-500 via-emerald-500 to-teal-500",
-                glow: "shadow-green-500/20"
-              },
-              { 
-                icon: DollarSign, 
-                label: "Earnings", 
-                value: `${stats?.total_earnings || 0}`, 
-                subtitle: "Total earned",
-                gradient: "from-blue-500 via-cyan-500 to-teal-500",
-                glow: "shadow-blue-500/20"
-              },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ y: -5, scale: 1.02 }}
-                className={`relative bg-gradient-to-br {stat.gradient} p-[2px] rounded-2xl shadow-2xl ${stat.glow}`}
-              >
-                <div className="bg-black/90 light:bg-white/90 rounded-2xl p-4 md:p-5 h-full">
-                  <div className="flex items-center justify-between mb-3">
-                    <stat.icon className="w-8 h-8 text-white light:text-black" />
-                    <Zap className="w-5 h-5 text-yellow-500" />
-                  </div>
-                  <div className="text-2xl md:text-3xl font-black text-white light:text-black mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs font-bold text-white/70 light:text-black/70 mb-1">
-                    {stat.label}
-                  </div>
-                  <div className="text-xs text-green-500 font-bold">
-                    {stat.subtitle}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Large Main Content - Active Tournaments */}
+      {/* Stats Cards - Mobile Optimized Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+        {[
+          { 
+            icon: Trophy, 
+            label: "Tournaments", 
+            value: stats?.tournaments_played || 0, 
+            subtitle: "Played",
+            gradient: "from-yellow-500 via-orange-500 to-red-500",
+            glow: "shadow-yellow-500/20"
+          },
+          { 
+            icon: TrendingUp, 
+            label: "Win Rate", 
+            value: `${stats?.win_rate || 0}%`, 
+            subtitle: `${stats?.wins || 0} wins`,
+            gradient: "from-green-500 via-emerald-500 to-teal-500",
+            glow: "shadow-green-500/20"
+          },
+          { 
+            icon: DollarSign, 
+            label: "Earnings", 
+            value: `₦${stats?.total_earnings || 0}`, 
+            subtitle: "Total earned",
+            gradient: "from-blue-500 via-cyan-500 to-teal-500",
+            glow: "shadow-blue-500/20"
+          },
+          { 
+            icon: Award, 
+            label: "Rank", 
+            value: `#${profile?.rank || 0}`, 
+            subtitle: "Global",
+            gradient: "from-purple-500 via-pink-500 to-red-500",
+            glow: "shadow-purple-500/20"
+          },
+        ].map((stat, index) => (
           <motion.div
+            key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="flex-1 bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-2xl p-4 md:p-6 overflow-hidden backdrop-blur-xl shadow-2xl"
+            transition={{ delay: index * 0.1 }}
+            whileHover={{ y: -3, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`relative bg-gradient-to-br ${stat.gradient} p-[2px] rounded-xl md:rounded-2xl shadow-xl ${stat.glow}`}
           >
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
-                  <Trophy className="w-6 h-6 text-white" />
-                </div>
-                <h2 className="text-xl md:text-2xl font-black text-white light:text-black">
-                  ACTIVE TOURNAMENTS
-                </h2>
+            <div className="bg-black/90 light:bg-white/90 rounded-xl md:rounded-2xl p-3 md:p-4 h-full">
+              <div className="flex items-center justify-between mb-2">
+                <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-white light:text-black" />
+                <Zap className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
               </div>
-              <Link href="/dashboard/tournaments" className="text-red-500 hover:text-red-400 font-bold text-sm flex items-center gap-1 group">
-                View All
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <div className="text-xl md:text-2xl lg:text-3xl font-black text-white light:text-black mb-1">
+                {stat.value}
+              </div>
+              <div className="text-[10px] md:text-xs font-bold text-white/70 light:text-black/70 mb-0.5">
+                {stat.label}
+              </div>
+              <div className="text-[10px] md:text-xs text-green-500 font-bold">
+                {stat.subtitle}
+              </div>
             </div>
-
-            {activeTournaments.length > 0 ? (
-              <div className="space-y-4 overflow-y-auto max-h-[calc(100%-80px)] pr-2 custom-scrollbar">
-                {activeTournaments.map((item: any, index: number) => {
-                  const tournament = item.tournament;
-                  return (
-                    <motion.div
-                      key={item.id}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.4 + index * 0.1 }}
-                      whileHover={{ scale: 1.02, x: 5 }}
-                      className="relative p-5 bg-gradient-to-r from-white/5 to-white/10 light:from-black/5 light:to-black/10 rounded-xl border border-white/20 light:border-black/20 hover:border-red-500/50 transition-all group overflow-hidden"
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      
-                      <div className="relative flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Gamepad2 className="w-4 h-4 text-red-500" />
-                            <span className="text-sm font-bold text-white/70 light:text-black/70">
-                              {tournament.game}
-                            </span>
-                            <span className="px-2 py-0.5 bg-red-500/20 border border-red-500/30 rounded text-xs font-bold text-red-500">
-                              {item.status}
-                            </span>
-                          </div>
-                          <h3 className="text-lg md:text-xl font-black text-white light:text-black mb-3 group-hover:text-red-500 transition-colors">
-                            {tournament.name}
-                          </h3>
-                          <div className="flex flex-wrap items-center gap-3 md:gap-6">
-                            <div className="flex items-center gap-2">
-                              <Users className="w-4 h-4 text-white/50 light:text-black/50" />
-                              <span className="text-sm font-bold text-white light:text-black">
-                                {tournament.current_participants}/{tournament.max_participants}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <DollarSign className="w-4 h-4 text-green-500" />
-                              <span className="text-sm font-black text-green-500">{tournament.prize_pool}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="relative flex items-center justify-between pt-4 border-t border-white/10 light:border-black/10">
-                        <div className="flex items-center gap-2">
-                          <Clock className="w-4 h-4 text-yellow-500" />
-                          <span className="text-sm font-bold text-white light:text-black">
-                            Starts {new Date(tournament.start_date).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <Link
-                          href={`/dashboard/tournaments/${tournament.id}`}
-                          className="px-5 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-bold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/20"
-                        >
-                          View Details
-                        </Link>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-[calc(100%-80px)] text-center">
-                <Trophy className="w-16 h-16 text-white/20 light:text-black/20 mb-4" />
-                <h3 className="text-xl font-black text-white light:text-black mb-2">
-                  No Active Tournaments
-                </h3>
-                <p className="text-white/70 light:text-black/70 mb-6">
-                  Join a tournament to start competing
-                </p>
-                <Link
-                  href="/dashboard/tournaments"
-                  className="px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-orange-600 transition-all shadow-lg shadow-red-500/20 flex items-center gap-2"
-                >
-                  <Plus className="w-5 h-5" />
-                  Browse Tournaments
-                </Link>
-              </div>
-            )}
           </motion.div>
+        ))}
+      </div>
 
-          {/* Bottom 2 Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Recent Activity */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              whileHover={{ y: -3 }}
-              className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-2xl p-4 md:p-6 shadow-2xl"
+      {/* Mobile: Tabs for Content Sections */}
+      <div className="lg:hidden mb-4">
+        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          {['Tournaments', 'Results', 'Next Match'].map((tab, i) => (
+            <button
+              key={tab}
+              className={`px-4 py-2 rounded-lg font-bold text-sm whitespace-nowrap transition-all ${
+                i === 0 
+                  ? 'bg-red-500 text-white' 
+                  : 'bg-white/5 text-white/70 hover:bg-white/10'
+              }`}
             >
-              <div className="flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                  <Target className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg md:text-xl font-black text-white light:text-black">
-                  RECENT RESULTS
-                </h3>
-              </div>
-              {recentResults.length > 0 ? (
-                <div className="space-y-3">
-                  {recentResults.map((result: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-white/5 light:bg-black/5 rounded-lg hover:bg-white/10 light:hover:bg-black/10 transition-all">
-                      <div className="flex items-center gap-3">
-                        {getPlacementIcon(result.rank)}
-                        <span className="text-sm text-white/70 light:text-black/70 truncate">
-                          {result.tournament.name}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className={`text-sm font-black ${getPlacementColor(result.rank)}`}>
-                          #{result.rank}
-                        </span>
-                        <span className="text-sm font-bold text-green-500">{result.prize_won}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-white/50 light:text-black/50 text-sm">
-                    No results yet
-                  </p>
-                </div>
-              )}
-            </motion.div>
-
-            {/* Quick Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7 }}
-              whileHover={{ y: -3 }}
-              className="relative bg-gradient-to-br from-red-500/20 to-orange-500/20 border-2 border-red-500/30 rounded-2xl p-4 md:p-6 overflow-hidden shadow-2xl shadow-red-500/10"
-            >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-3xl" />
-              <div className="relative flex items-center gap-3 mb-5">
-                <div className="w-10 h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center">
-                  <Award className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="text-lg md:text-xl font-black text-white light:text-black">
-                  YOUR RANK
-                </h3>
-              </div>
-              <div className="relative text-center">
-                <div className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">
-                  #{profile?.rank || 0}
-                </div>
-                <div className="text-sm text-white/70 light:text-black/70">
-                  Keep competing to climb!
-                </div>
-              </div>
-            </motion.div>
-          </div>
+              {tab}
+            </button>
+          ))}
         </div>
+      </div>
 
-        {/* Right Column (1/3 width) - Next Match Widget */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-          className="hidden lg:flex relative bg-gradient-to-br from-red-500/10 via-red-600/10 to-orange-500/10 border-2 border-red-500/30 rounded-2xl p-4 md:p-6 flex-col overflow-hidden shadow-2xl shadow-red-500/10"
-        >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-red-500/5 rounded-full blur-3xl animate-pulse" />
-          
-          <div className="relative flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-orange-500 rounded-xl flex items-center justify-center animate-pulse">
-              <Clock className="w-6 h-6 text-white" />
+      {/* Active Tournaments - Mobile Optimized */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-xl md:rounded-2xl p-4 md:p-6 backdrop-blur-xl shadow-2xl mb-4 md:mb-6"
+      >
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2 md:gap-3">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg md:rounded-xl flex items-center justify-center">
+              <Trophy className="w-4 h-4 md:w-6 md:h-6 text-white" />
             </div>
-            <h2 className="text-2xl font-black text-white light:text-black">
-              NEXT MATCH
+            <h2 className="text-lg md:text-xl lg:text-2xl font-black text-white light:text-black">
+              ACTIVE TOURNAMENTS
             </h2>
           </div>
+          <Link href="/dashboard/tournaments" className="text-red-500 hover:text-red-400 font-bold text-xs md:text-sm flex items-center gap-1 group">
+            View All
+            <ArrowRight className="w-3 h-3 md:w-4 md:h-4 group-hover:translate-x-1 transition-transform" />
+          </Link>
+        </div>
 
-          {nextMatch ? (
-            <div className="relative flex-1 space-y-5">
-              <div className="p-4 bg-white/5 light:bg-black/5 rounded-xl border border-white/10 light:border-black/10">
-                <div className="text-sm text-white/70 light:text-black/70 mb-2">Tournament</div>
-                <div className="font-bold text-white light:text-black">{nextMatch.tournament.name}</div>
-              </div>
+        {activeTournaments.length > 0 ? (
+          <div className="space-y-3 md:space-y-4 max-h-[400px] md:max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+            {activeTournaments.map((item: any, index: number) => {
+              const tournament = item.tournament;
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.4 + index * 0.1 }}
+                  whileHover={{ scale: 1.01, x: 5 }}
+                  whileTap={{ scale: 0.99 }}
+                  className="relative p-3 md:p-4 bg-gradient-to-r from-white/5 to-white/10 light:from-black/5 light:to-black/10 rounded-lg md:rounded-xl border border-white/20 light:border-black/20 hover:border-red-500/50 transition-all group overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/5 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="relative">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <Gamepad2 className="w-3 h-3 md:w-4 md:h-4 text-red-500 flex-shrink-0" />
+                          <span className="text-xs md:text-sm font-bold text-white/70 light:text-black/70">
+                            {tournament.game}
+                          </span>
+                          <span className="px-2 py-0.5 bg-red-500/20 border border-red-500/30 rounded text-[10px] md:text-xs font-bold text-red-500">
+                            {item.status}
+                          </span>
+                        </div>
+                        <h3 className="text-base md:text-lg lg:text-xl font-black text-white light:text-black mb-2 md:mb-3 group-hover:text-red-500 transition-colors line-clamp-2">
+                          {tournament.name}
+                        </h3>
+                        <div className="flex flex-wrap items-center gap-3 md:gap-4 text-xs md:text-sm">
+                          <div className="flex items-center gap-1 md:gap-2">
+                            <Users className="w-3 h-3 md:w-4 md:h-4 text-white/50 light:text-black/50" />
+                            <span className="font-bold text-white light:text-black">
+                              {tournament.current_participants}/{tournament.max_participants}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1 md:gap-2">
+                            <DollarSign className="w-3 h-3 md:w-4 md:h-4 text-green-500" />
+                            <span className="font-black text-green-500">₦{tournament.prize_pool}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
 
-              <div className="p-5 bg-gradient-to-r from-red-500/20 to-orange-500/20 border-2 border-red-500/30 rounded-xl">
-                <div className="text-sm text-white/70 light:text-black/70 mb-2">Starts In</div>
-                <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
-                  {getTimeUntilMatch(nextMatch.scheduled_time)}
-                </div>
-              </div>
+                    <div className="flex items-center justify-between pt-3 border-t border-white/10 light:border-black/10">
+                      <div className="flex items-center gap-1 md:gap-2">
+                        <Clock className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
+                        <span className="text-xs md:text-sm font-bold text-white light:text-black">
+                          {new Date(tournament.start_date).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <Link
+                        href={`/dashboard/tournaments/${tournament.id}`}
+                        className="px-3 md:px-4 py-1.5 md:py-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs md:text-sm font-bold rounded-lg hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/20"
+                      >
+                        View
+                      </Link>
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12 md:py-16 text-center">
+            <Trophy className="w-12 h-12 md:w-16 md:h-16 text-white/20 light:text-black/20 mb-4" />
+            <h3 className="text-lg md:text-xl font-black text-white light:text-black mb-2">
+              No Active Tournaments
+            </h3>
+            <p className="text-sm md:text-base text-white/70 light:text-black/70 mb-6">
+              Join a tournament to start competing
+            </p>
+            <Link
+              href="/dashboard/tournaments"
+              className="px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-lg md:rounded-xl hover:from-red-600 hover:to-orange-600 transition-all shadow-lg shadow-red-500/20 flex items-center gap-2 text-sm md:text-base"
+            >
+              <Plus className="w-4 h-4 md:w-5 md:h-5" />
+              Browse Tournaments
+            </Link>
+          </div>
+        )}
+      </motion.div>
 
-              {nextMatch.match_code && (
-                <div className="p-4 bg-white/5 light:bg-black/5 rounded-xl border border-white/10 light:border-black/10">
-                  <div className="text-sm text-white/70 light:text-black/70 mb-2">Match Code</div>
-                  <div className="font-mono font-bold text-lg text-white light:text-black bg-white/10 light:bg-black/10 px-4 py-3 rounded-lg text-center">
-                    {nextMatch.match_code}
+      {/* Bottom Cards - Mobile Stacked */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Recent Results */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          whileHover={{ y: -3 }}
+          className="bg-gradient-to-br from-slate-900/90 to-slate-800/90 light:from-white/90 light:to-gray-100/90 border-2 border-white/10 light:border-black/10 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-2xl"
+        >
+          <div className="flex items-center gap-2 md:gap-3 mb-4 md:mb-5">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg md:rounded-xl flex items-center justify-center">
+              <Target className="w-4 h-4 md:w-6 md:h-6 text-white" />
+            </div>
+            <h3 className="text-base md:text-lg lg:text-xl font-black text-white light:text-black">
+              RECENT RESULTS
+            </h3>
+          </div>
+          {recentResults.length > 0 ? (
+            <div className="space-y-2 md:space-y-3">
+              {recentResults.map((result: any, index: number) => (
+                <div key={index} className="flex items-center justify-between p-2 md:p-3 bg-white/5 light:bg-black/5 rounded-lg hover:bg-white/10 light:hover:bg-black/10 transition-all">
+                  <div className="flex items-center gap-2 md:gap-3 flex-1 min-w-0">
+                    {getPlacementIcon(result.rank)}
+                    <span className="text-xs md:text-sm text-white/70 light:text-black/70 truncate">
+                      {result.tournament.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
+                    <span className={`text-xs md:text-sm font-black ${getPlacementColor(result.rank)}`}>
+                      #{result.rank}
+                    </span>
+                    <span className="text-xs md:text-sm font-bold text-green-500">₦{result.prize_won}</span>
                   </div>
                 </div>
-              )}
-
-              <Link
-                href="/dashboard/match-room"
-                className="relative w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-black rounded-xl hover:from-red-600 hover:to-orange-600 transition-all shadow-2xl shadow-red-500/30 group"
-              >
-                Open Match Room
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              ))}
             </div>
           ) : (
-            <div className="relative flex-1 flex flex-col items-center justify-center text-center">
-              <Clock className="w-16 h-16 text-white/20 light:text-black/20 mb-4" />
-              <h3 className="text-xl font-black text-white light:text-black mb-2">
-                No Upcoming Matches
-              </h3>
-              <p className="text-white/70 light:text-black/70 mb-6">
-                Join a tournament to schedule matches
+            <div className="text-center py-8">
+              <p className="text-white/50 light:text-black/50 text-xs md:text-sm">
+                No results yet
               </p>
-              <Link
-                href="/dashboard/tournaments"
-                className="px-6 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold rounded-xl hover:from-red-600 hover:to-orange-600 transition-all shadow-lg shadow-red-500/20 flex items-center gap-2"
-              >
-                <Plus className="w-5 h-5" />
-                Find Tournaments
-              </Link>
             </div>
           )}
         </motion.div>
+
+        {/* Your Rank */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.7 }}
+          whileHover={{ y: -3 }}
+          className="relative bg-gradient-to-br from-red-500/20 to-orange-500/20 border-2 border-red-500/30 rounded-xl md:rounded-2xl p-4 md:p-6 overflow-hidden shadow-2xl shadow-red-500/10"
+        >
+          <div className="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 bg-red-500/10 rounded-full blur-3xl" />
+          <div className="relative flex items-center gap-2 md:gap-3 mb-4 md:mb-5">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg md:rounded-xl flex items-center justify-center">
+              <Award className="w-4 h-4 md:w-6 md:h-6 text-white" />
+            </div>
+            <h3 className="text-base md:text-lg lg:text-xl font-black text-white light:text-black">
+              YOUR RANK
+            </h3>
+          </div>
+          <div className="relative text-center">
+            <div className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500 mb-2">
+              #{profile?.rank || 0}
+            </div>
+            <div className="text-xs md:text-sm text-white/70 light:text-black/70">
+              Keep competing to climb!
+            </div>
+          </div>
+        </motion.div>
       </div>
+
+      {/* Mobile Bottom Navigation Spacer */}
+      <div className="h-20 lg:hidden" />
 
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
+          width: 4px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
           background: rgba(255, 255, 255, 0.05);
@@ -560,6 +523,13 @@ export default function DashboardOverviewPage() {
         }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
           background: linear-gradient(to bottom, #dc2626, #ea580c);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
