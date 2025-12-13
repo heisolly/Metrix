@@ -207,10 +207,11 @@ export default function DashboardLayout({
               onClick={() => setMobileSidebarOpen(false)}
             />
             <motion.div
-              initial={{ x: -280 }}
+              initial={{ x: "-100%" }}
               animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              className="fixed top-0 left-0 bottom-0 w-70 bg-black/95 light:bg-white/95 backdrop-blur-xl border-r border-white/10 light:border-black/10 z-50 lg:hidden"
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+              className="fixed top-0 left-0 bottom-0 w-64 max-w-[75vw] bg-black/95 light:bg-white/95 backdrop-blur-xl border-r border-white/10 light:border-black/10 z-50 lg:hidden"
             >
               <div className="flex flex-col h-full">
                 {/* Logo */}
