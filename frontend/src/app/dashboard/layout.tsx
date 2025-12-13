@@ -306,16 +306,11 @@ export default function DashboardLayout({
       </div>
 
       {/* Main Content */}
-      <motion.div
-        animate={{
-          marginLeft: sidebarCollapsed ? 80 : 280,
-        }}
-        className="min-h-screen lg:ml-70 pt-20 lg:pt-0"
-      >
+      <div className="min-h-screen pt-20 lg:pt-0 lg:ml-[280px]">
         <div className="p-4 md:p-8">
           {children}
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
