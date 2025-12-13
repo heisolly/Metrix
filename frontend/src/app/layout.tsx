@@ -102,6 +102,13 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#0F131A" />
       </head>
       <body className="font-sans antialiased w-full">
+        {/* Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3437812813438383"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <Providers>
           <div className="w-full min-h-screen bg-light-bg-primary dark:bg-dark-bg-primary text-light-text-primary dark:text-dark-text-primary">
             {children}
