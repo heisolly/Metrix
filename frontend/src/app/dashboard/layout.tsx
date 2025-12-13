@@ -23,6 +23,7 @@ import {
   ShoppingCart
 } from "lucide-react";
 import { getCurrentUser, signOut } from "@/lib/auth";
+import MobileBottomNav from "@/components/MobileBottomNav";
 
 export default function DashboardLayout({
   children,
@@ -304,6 +305,9 @@ export default function DashboardLayout({
           <div className="w-10" /> {/* Spacer */}
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <MobileBottomNav />
 
       {/* Main Content */}
       <div className="min-h-screen pt-20 lg:pt-0 lg:ml-[280px]">

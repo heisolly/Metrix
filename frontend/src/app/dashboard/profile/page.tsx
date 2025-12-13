@@ -11,7 +11,10 @@ import {
   Zap,
   Edit,
   Save,
-  X
+  X,
+  Camera,
+  MapPin,
+  Link as LinkIcon
 } from "lucide-react";
 import { getCurrentUser } from "@/lib/auth";
 import { updateProfile } from "@/lib/database";
@@ -72,111 +75,144 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto">
+    <div className="max-w-5xl mx-auto pb-24 md:pb-0">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-black text-white light:text-black mb-2">
+      <div className="mb-4 md:mb-8 px-2 md:px-0">
+        <h1 className="text-2xl md:text-4xl font-black text-white light:text-black mb-1 md:mb-2">
           PROFILE
         </h1>
-        <p className="text-white light:text-black">
+        <p className="text-sm md:text-base text-white/70 light:text-black/70">
           Manage your account and view your gaming stats
         </p>
       </div>
 
-      {/* Profile Card */}
+      {/* Main Profile Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-black/60 light:bg-white/80 border-2 border-white/10 light:border-black/10 rounded-2xl p-8 mb-8"
+        className="bg-slate-900 light:bg-white border border-white/10 light:border-black/10 rounded-2xl md:rounded-3xl overflow-hidden mb-6 md:mb-8 shadow-xl"
       >
-        <div className="flex flex-col md:flex-row items-start gap-8">
-          {/* Avatar */}
-          <div className="relative">
-            <div className="w-32 h-32 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl flex items-center justify-center">
-              <span className="text-white font-black text-5xl">
-                {user?.email?.charAt(0).toUpperCase()}
-              </span>
-            </div>
-            <button className="absolute bottom-0 right-0 p-2 bg-red-500 rounded-lg hover:bg-red-600 transition-colors">
-              <Edit className="w-4 h-4 text-white" />
+        {/* Banner */}
+        <div className="h-32 md:h-48 bg-gradient-to-r from-red-600 via-orange-500 to-red-600 relative">
+          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20"></div>
+          {isEditing && (
+            <button className="absolute top-4 right-4 p-2 bg-black/50 backdrop-blur-sm rounded-full text-white hover:bg-black/70 transition-colors">
+              <Camera className="w-5 h-5" />
             </button>
+          )}
+        </div>
+
+        <div className="px-4 md:px-8 pb-6 md:pb-8 relative">
+          {/* Avatar & Actions Row */}
+          <div className="flex justify-between items-end -mt-12 md:-mt-16 mb-4 md:mb-6">
+            <div className="relative">
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl md:rounded-3xl border-4 border-slate-900 light:border-white bg-black light:bg-gray-100 flex items-center justify-center shadow-lg transform rotate-[-2deg]">
+                <span className="text-white light:text-black font-black text-4xl md:text-5xl">
+                  {user?.email?.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              {isEditing && (
+                <button className="absolute -bottom-2 -right-2 p-2 bg-red-500 rounded-lg shadow-lg text-white hover:bg-red-600 transition-colors z-10">
+                  <Camera className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+
+            <div className="mb-1 md:mb-4">
+              {!isEditing ? (
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="px-4 py-2 bg-white/5 light:bg-black/5 hover:bg-white/10 light:hover:bg-black/10 border border-white/10 light:border-black/10 rounded-xl text-white light:text-black font-bold text-sm flex items-center gap-2 transition-colors"
+                >
+                  <Edit className="w-4 h-4" />
+                  <span className="hidden md:inline">Edit Profile</span>
+                  <span className="md:hidden">Edit</span>
+                </button>
+              ) : (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setIsEditing(false)}
+                    className="p-2 md:px-4 md:py-2 bg-white/5 light:bg-black/5 hover:bg-white/10 rounded-xl text-white light:text-black font-bold text-sm transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={handleSave}
+                    className="px-4 py-2 bg-green-500 hover:bg-green-600 rounded-xl text-white font-bold text-sm flex items-center gap-2 transition-colors shadow-lg shadow-green-500/20"
+                  >
+                    <Save className="w-4 h-4" />
+                    <span className="hidden md:inline">Save Changes</span>
+                    <span className="md:hidden">Save</span>
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Info */}
-          <div className="flex-1">
-            <div className="flex items-start justify-between mb-6">
-              <div>
-                {isEditing ? (
+          {/* User Details */}
+          <div className="space-y-4 md:space-y-6">
+            <div className="flex flex-col gap-1">
+              {isEditing ? (
+                <div className="space-y-3">
+                  <input
+                    type="text"
+                    value={formData.fullName}
+                    onChange={(e) => setFormData({...formData, fullName: e.target.value})}
+                    placeholder="Full Name"
+                    className="w-full md:w-1/2 px-4 py-2 bg-white/5 light:bg-black/5 border border-white/10 rounded-xl text-white light:text-black text-lg focus:border-red-500 focus:outline-none"
+                  />
                   <input
                     type="text"
                     value={formData.username}
                     onChange={(e) => setFormData({...formData, username: e.target.value})}
                     placeholder="Username"
-                    className="text-3xl font-black text-white light:text-black bg-white/5 light:bg-black/5 border-2 border-white/20 light:border-black/20 rounded-lg px-4 py-2 mb-2 focus:border-red-500 focus:outline-none"
+                    className="w-full md:w-1/2 px-4 py-2 bg-white/5 light:bg-black/5 border border-white/10 rounded-xl text-white light:text-black text-xl md:text-3xl font-black focus:border-red-500 focus:outline-none"
                   />
-                ) : (
-                  <h2 className="text-3xl font-black text-white light:text-black mb-2">
-                    {formData.username || user?.email?.split('@')[0] || "Player"}
-                  </h2>
-                )}
-                
-                <div className="flex items-center gap-2 text-white/70 light:text-black/70 mb-4">
-                  <Mail className="w-4 h-4" />
-                  <span>{user?.email}</span>
-                </div>
-
-                <div className="flex items-center gap-2 text-white/70 light:text-black/70">
-                  <Calendar className="w-4 h-4" />
-                  <span>Joined {new Date(user?.created_at || Date.now()).toLocaleDateString()}</span>
-                </div>
-              </div>
-
-              {/* Edit Button */}
-              {isEditing ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleSave}
-                    className="px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:bg-green-600 transition-colors flex items-center gap-2"
-                  >
-                    <Save className="w-4 h-4" />
-                    Save
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 transition-colors flex items-center gap-2"
-                  >
-                    <X className="w-4 h-4" />
-                    Cancel
-                  </button>
                 </div>
               ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-red-500 text-white font-bold rounded-lg hover:bg-red-600 transition-colors flex items-center gap-2"
-                >
-                  <Edit className="w-4 h-4" />
-                  Edit Profile
-                </button>
+                <>
+                  <h2 className="text-2xl md:text-3xl font-black text-white light:text-black flex items-center gap-2">
+                    {formData.username || user?.email?.split('@')[0] || "Player"}
+                    {formData.fullName && (
+                      <span className="text-base md:text-lg font-normal text-white/50 light:text-black/50">
+                        ({formData.fullName})
+                      </span>
+                    )}
+                  </h2>
+                  <div className="flex flex-wrap items-center gap-3 text-sm md:text-base text-white/50 light:text-black/50">
+                    <div className="flex items-center gap-1.5">
+                      <Mail className="w-4 h-4" />
+                      <span>{user?.email}</span>
+                    </div>
+                    <div className="w-1 h-1 bg-white/20 rounded-full hidden md:block"></div>
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4" />
+                      <span>Joined {new Date(user?.created_at || Date.now()).getFullYear()}</span>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
 
-            {/* Bio */}
-            <div>
-              <label className="block text-sm font-bold text-white light:text-black mb-2">
-                Bio
-              </label>
+            {/* Bio Section */}
+            <div className="relative">
               {isEditing ? (
-                <textarea
-                  value={formData.bio}
-                  onChange={(e) => setFormData({...formData, bio: e.target.value})}
-                  placeholder="Tell us about yourself..."
-                  rows={3}
-                  className="w-full text-white light:text-black bg-white/5 light:bg-black/5 border-2 border-white/20 light:border-black/20 rounded-lg px-4 py-2 focus:border-red-500 focus:outline-none resize-none"
-                />
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-white/50 uppercase tracking-wider">About Me</label>
+                  <textarea
+                    value={formData.bio}
+                    onChange={(e) => setFormData({...formData, bio: e.target.value})}
+                    placeholder="Write something about yourself..."
+                    rows={3}
+                    className="w-full px-4 py-3 bg-white/5 light:bg-black/5 border border-white/10 rounded-xl text-white light:text-black focus:border-red-500 focus:outline-none resize-none"
+                  />
+                </div>
               ) : (
-                <p className="text-white light:text-black">
-                  {formData.bio || "No bio yet. Click edit to add one!"}
-                </p>
+                <div className="bg-white/5 light:bg-black/5 rounded-xl p-4 md:p-6 backdrop-blur-sm border border-white/5">
+                  <p className="text-white/80 light:text-black/80 text-sm md:text-base leading-relaxed">
+                    {formData.bio || "No bio yet. Click edit to add one!"}
+                  </p>
+                </div>
               )}
             </div>
           </div>
@@ -184,23 +220,28 @@ export default function ProfilePage() {
       </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8 px-1">
         {stats.map((stat, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + index * 0.05 }}
-            className="bg-black/60 light:bg-white/80 border-2 border-white/10 light:border-black/10 rounded-xl p-4"
+            className="bg-gradient-to-br from-slate-900 to-black light:from-white light:to-gray-50 border border-white/10 light:border-black/10 rounded-2xl p-4 md:p-6 shadow-lg relative overflow-hidden group"
           >
-            <div className={`w-10 h-10 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center mb-3`}>
-              <stat.icon className="w-5 h-5 text-white" />
+            <div className={`absolute -right-4 -top-4 w-24 h-24 bg-gradient-to-br ${stat.color} opacity-10 group-hover:opacity-20 transition-opacity blur-2xl rounded-full`}></div>
+            
+            <div className={`w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-black/20`}>
+              <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
             </div>
-            <div className="text-2xl font-black text-white light:text-black mb-1">
-              {stat.value}
-            </div>
-            <div className="text-sm text-white/70 light:text-black/70">
-              {stat.label}
+            
+            <div className="relative">
+              <div className="text-2xl md:text-3xl font-black text-white light:text-black mb-1 tracking-tight">
+                {stat.value}
+              </div>
+              <div className="text-xs md:text-sm text-white/50 light:text-black/50 font-medium uppercase tracking-wide">
+                {stat.label}
+              </div>
             </div>
           </motion.div>
         ))}
@@ -211,37 +252,39 @@ export default function ProfilePage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-black/60 light:bg-white/80 border-2 border-white/10 light:border-black/10 rounded-2xl p-6"
+        className="bg-slate-900 light:bg-white border border-white/10 light:border-black/10 rounded-2xl md:rounded-3xl p-4 md:p-8 shadow-xl"
       >
-        <h3 className="text-2xl font-black text-white light:text-black mb-6 flex items-center gap-2">
-          <Trophy className="w-6 h-6 text-red-500" />
+        <h3 className="text-xl md:text-2xl font-black text-white light:text-black mb-4 md:mb-6 flex items-center gap-2 md:gap-3">
+          <Trophy className="w-6 h-6 md:w-8 md:h-8 text-yellow-500" />
           ACHIEVEMENTS
         </h3>
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
           {achievements.map((achievement, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 + index * 0.05 }}
-              className={`p-4 rounded-xl border-2 {
+              className={`p-4 rounded-xl border transition-all duration-300 ${
                 achievement.unlocked
-                  ? "bg-red-500/10 border-red-500/30"
-                  : "bg-white/5 light:bg-black/5 border-white/10 light:border-black/10 opacity-50"
+                  ? "bg-gradient-to-br from-slate-800 to-slate-900 light:from-gray-50 light:to-white border-yellow-500/20 shadow-lg shadow-black/20"
+                  : "bg-slate-900/50 light:bg-gray-100/50 border-white/5 light:border-black/5 opacity-50 grayscale"
               }`}
             >
-              <div className="flex items-start gap-3">
-                <div className={`w-10 h-10 rounded-lg flex items-center justify-center {
-                  achievement.unlocked ? "bg-red-500" : "bg-white/10 light:bg-black/10"
+              <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-inner ${
+                  achievement.unlocked ? "bg-gradient-to-br from-yellow-500 to-orange-500" : "bg-white/5 light:bg-black/5"
                 }`}>
-                  <Trophy className={`w-5 h-5 ${achievement.unlocked ? "text-white" : "text-white/30 light:text-black/30"}`} />
+                  <Trophy className={`w-6 h-6 ${achievement.unlocked ? "text-white" : "text-white/20 light:text-black/20"}`} />
                 </div>
                 <div>
-                  <h4 className="font-black text-white light:text-black mb-1">
+                  <h4 className={`font-black mb-1 text-sm md:text-base ${
+                    achievement.unlocked ? "text-white light:text-black" : "text-white/40 light:text-black/40"
+                  }`}>
                     {achievement.title}
                   </h4>
-                  <p className="text-sm text-white/70 light:text-black/70">
+                  <p className="text-xs md:text-sm text-white/50 light:text-black/50 leading-relaxed">
                     {achievement.description}
                   </p>
                 </div>
