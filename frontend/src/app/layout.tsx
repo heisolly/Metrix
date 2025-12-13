@@ -100,6 +100,7 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
         <meta name="theme-color" content="#0F131A" />
         <meta name="msapplication-TileColor" content="#0F131A" />
+        <meta name="google-adsense-account" content="ca-pub-3437812813438383" />
       </head>
       <body className="font-sans antialiased w-full">
         {/* Google AdSense */}

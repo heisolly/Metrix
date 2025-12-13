@@ -1,6 +1,6 @@
 "use client";
 
-import AdSense from './AdSense';
+import AdSense from '@/components/AdSense';
 
 /**
  * Display Ad - Large rectangle for sidebar or content
