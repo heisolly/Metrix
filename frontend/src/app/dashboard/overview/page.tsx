@@ -244,7 +244,7 @@ export default function DashboardOverviewPage() {
       </motion.div>
 
       {/* Stats Cards - Mobile Optimized Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
         {[
           { 
             icon: Trophy, 
@@ -266,7 +266,7 @@ export default function DashboardOverviewPage() {
             icon: DollarSign, 
             label: "Earnings", 
             value: `₦${stats?.total_earnings || 0}`, 
-            subtitle: "Total earned",
+            subtitle: "Total",
             gradient: "from-blue-500 via-cyan-500 to-teal-500",
             glow: "shadow-blue-500/20"
           },
@@ -286,20 +286,20 @@ export default function DashboardOverviewPage() {
             transition={{ delay: index * 0.1 }}
             whileHover={{ y: -3, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className={`relative bg-gradient-to-br ${stat.gradient} p-[2px] rounded-xl md:rounded-2xl shadow-xl ${stat.glow}`}
+            className={`relative bg-gradient-to-br ${stat.gradient} p-[1px] md:p-[2px] rounded-lg md:rounded-xl shadow-lg ${stat.glow}`}
           >
-            <div className="bg-black/90 light:bg-white/90 rounded-xl md:rounded-2xl p-3 md:p-4 h-full">
-              <div className="flex items-center justify-between mb-2">
-                <stat.icon className="w-5 h-5 md:w-6 md:h-6 text-white light:text-black" />
-                <Zap className="w-3 h-3 md:w-4 md:h-4 text-yellow-500" />
+            <div className="bg-black/90 light:bg-white/90 rounded-lg md:rounded-xl p-2.5 md:p-4 h-full flex flex-col">
+              <div className="flex items-center justify-between mb-1.5 md:mb-2">
+                <stat.icon className="w-4 h-4 md:w-6 md:h-6 text-white light:text-black flex-shrink-0" />
+                <Zap className="w-2.5 h-2.5 md:w-4 md:h-4 text-yellow-500 flex-shrink-0" />
               </div>
-              <div className="text-xl md:text-2xl lg:text-3xl font-black text-white light:text-black mb-1">
+              <div className="text-lg md:text-2xl lg:text-3xl font-black text-white light:text-black mb-0.5 md:mb-1 leading-tight">
                 {stat.value}
               </div>
-              <div className="text-[10px] md:text-xs font-bold text-white/70 light:text-black/70 mb-0.5">
+              <div className="text-[9px] md:text-xs font-bold text-white/70 light:text-black/70 leading-tight">
                 {stat.label}
               </div>
-              <div className="text-[10px] md:text-xs text-green-500 font-bold">
+              <div className="text-[8px] md:text-xs text-green-500 font-bold leading-tight mt-0.5">
                 {stat.subtitle}
               </div>
             </div>
