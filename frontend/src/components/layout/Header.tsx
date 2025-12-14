@@ -124,12 +124,6 @@ export default function Header() {
                   <span className="absolute inset-0 bg-gradient-to-r from-red-500/0 via-red-500/10 to-red-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
                   
                   <span className="relative z-10">{link.label}</span>
-                  
-                  {link.submenu && (
-                    <ChevronDown className={`relative z-10 w-3.5 h-3.5 transition-transform duration-300 {
-                      isHovered === index ? 'rotate-180' : ''
-                    }`} />
-                  )}
                 </Link>
                 
                 {/* Active indicator with glow */}
