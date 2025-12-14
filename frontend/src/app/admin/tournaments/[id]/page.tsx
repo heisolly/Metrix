@@ -415,6 +415,22 @@ export default function AdminTournamentDetailPage() {
                 <Users className="w-5 h-5" /> Manage Participants
               </Link>
 
+              <Link
+                href={`/admin/tournaments/${tournamentId}/room`}
+                className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all"
+              >
+                <Settings className="w-5 h-5" /> Room Setup
+              </Link>
+
+              {tournament.status === 'ongoing' && (
+                <Link
+                  href={`/admin/tournaments/${tournamentId}/live`}
+                  className="w-full py-3 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all animate-pulse"
+                >
+                  <Play className="w-5 h-5" /> Live Management
+                </Link>
+              )}
+
               {tournament.status === 'upcoming' && (
                 <button
                   onClick={() => updateStatus('ongoing')}

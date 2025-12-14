@@ -39,16 +39,6 @@ export default function Header() {
       label: "HOME"
     },
     { 
-      href: "/tournaments", 
-      label: "TOURNAMENT",
-      submenu: [
-        { href: "/tournaments/upcoming", label: "Upcoming" },
-        { href: "/tournaments/past", label: "Past Events" },
-        { href: "/tournaments/register", label: "Register" }
-      ]
-    },
-
-    { 
       href: "/news", 
       label: "NEWS"
     },
@@ -152,31 +142,6 @@ export default function Header() {
                     <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-orange-500 blur-md opacity-50" />
                   </motion.div>
                 )}
-
-                {/* Dropdown menu with glassmorphism */}
-                <AnimatePresence>
-                  {link.submenu && isHovered === index && (
-                    <motion.div 
-                      className="absolute left-0 top-full mt-2 w-56 rounded-xl bg-[#0f1419]/95 backdrop-blur-xl border border-red-500/20 shadow-2xl shadow-red-500/10 overflow-hidden"
-                      initial={{ opacity: 0, y: -10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-b from-red-500/5 to-transparent" />
-                      {link.submenu.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className="relative block px-5 py-3 text-sm font-medium text-gray-300 hover:text-white hover:bg-red-500/10 transition-all duration-200 group/item"
-                        >
-                          <span className="absolute left-3 top-1/2 -translate-y-1/2 w-1 h-1 bg-red-400 rounded-full opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                          <span className="pl-3">{item.label}</span>
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
               </div>
             ))}
           </nav>
@@ -325,33 +290,15 @@ export default function Header() {
                 >
                   <Link
                     href={link.href}
-                    className={`block px-4 py-3 rounded-lg text-base font-bold transition-all duration-300 {
+                    className={`block px-4 py-3 rounded-lg text-base font-bold transition-all duration-300 ${
                       isActive(link.href)
                         ? 'bg-gradient-to-r from-red-500/20 to-orange-500/20 text-red-400 border border-red-500/30'
                         : 'text-gray-300 hover:bg-white/5 hover:text-white'
                     }`}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    <div className="flex items-center justify-between">
-                      <span>{link.label}</span>
-                      {link.submenu && <ChevronDown className="w-4 h-4" />}
-                    </div>
+                    <span>{link.label}</span>
                   </Link>
-                  
-                  {link.submenu && (
-                    <div className="pl-4 mt-2 space-y-1">
-                      {link.submenu.map((item) => (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className="block px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {item.label}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
                 </motion.div>
               ))}
               
