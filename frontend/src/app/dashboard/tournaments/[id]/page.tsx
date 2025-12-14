@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, Trophy, Calendar, Users, DollarSign, Gamepad2, Key, Lock, Map, Copy, Check, Eye, EyeOff, AlertCircle } from "lucide-react";
+import { ArrowLeft, Trophy, Calendar, Users, DollarSign, Gamepad2, Key, Lock, Map as MapIcon, Copy, Check, Eye, EyeOff, AlertCircle } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/lib/auth";
 import BracketTree from "@/components/BracketTree";
@@ -297,7 +297,7 @@ export default function PlayerTournamentPage() {
                 {/* Map Name */}
                 <div className="bg-black/40 backdrop-blur-sm rounded-xl p-4 border border-white/10">
                   <div className="flex items-center gap-2 mb-2">
-                    <Map className="w-4 h-4 text-green-400" />
+                    <MapIcon className="w-4 h-4 text-green-400" />
                     <span className="text-sm font-bold text-white/70">Map</span>
                   </div>
                   <div className="text-2xl font-black text-white">
