@@ -79,7 +79,9 @@ export default function PlayerTournamentPage() {
           .select('id, username, email')
           .in('id', Array.from(playerIds));
 
-        const profileMap = new Map(profiles?.map(p => [p.id, p]) || []);
+        const profileMap = new Map<string, any>(
+          profiles?.map(p => [p.id, p] as [string, any]) || []
+        );
 
         // Merge profile data with matches
         const matchesWithProfiles = matchesData.map(match => ({
